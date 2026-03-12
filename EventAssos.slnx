@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="EventAssos.API/EventAssos.API.csproj" />
+  <Project Path="EventAssos.Core/EventAssos.Core.csproj" />
+  <Project Path="EventAssos.Domain/EventAssos.Domain.csproj" />
+  <Project Path="EventAssos.Infra/EventAssos.Infra.csproj" />
+</Solution>
