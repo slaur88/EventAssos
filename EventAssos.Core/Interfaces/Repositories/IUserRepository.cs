@@ -1,0 +1,16 @@
+﻿using EventAssos.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace EventAssos.Core.Interfaces.Repositories
+{    
+    //Création de l'interface qui sera implémentée après
+    public interface IUserRepository: IBaseRepository<User, Guid>
+    {
+        Task<User?> GetUserByEmailAsync(string email);
+        Task<User?> GetUserByPseudoAsync(string pseudo);
+
+        
+    }
+}
