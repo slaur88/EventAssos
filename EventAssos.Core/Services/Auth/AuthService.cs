@@ -13,7 +13,7 @@ namespace EventAssos.Core.Services.Auth
 {
     public class AuthService(
     IUserRepository _userRepository,
-    IPasswordHacherService _passwordHasherService,
+    IPasswordHasherService _passwordHasherService,
     IJwtService _jwtService,
     IEmailService _emailService
     ) : IAuthService

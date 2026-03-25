@@ -7,7 +7,7 @@ using System.Text;
 
 namespace EventAssos.Core.Services.Tools
 {
-    internal class PasswordHacherService : IPasswordHacherService
+    internal class PasswordHasherService : IPasswordHasherService
     {
         private const int SaltSize = 16;             
         private const int HashSize = 32;              
