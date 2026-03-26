@@ -6,10 +6,11 @@ using System.Text;
 
 namespace EventAssos.Core.Interfaces.Services.Auth
 {
-    internal interface IAuthService
+    public interface IAuthService
     {
         Task<RegisterResponseDTO> RegisterAsync(RegisterRequestDTO credentials);
-        
+        Task<LoginResponseDto> Login(LoginRequestDTO credentials);
+
 
     }
 }

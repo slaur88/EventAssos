@@ -14,33 +14,46 @@ namespace EventAssos.Core.Services.Auth
     public class AuthService(
     IUserRepository _userRepository,
     IPasswordHasherService _passwordHasherService,
+    IPasswordGeneratorService _passwordGeneratorService,
     IJwtService _jwtService,
     IEmailService _emailService
     ) : IAuthService
     {
+        public async Task<LoginResponseDto> Login(LoginRequestDTO credentials)
+        {
+            if (string.IsNullOrWhiteSpace(credentials.Email) || string.IsNullOrWhiteSpace(credentials.Password))
+                throw new ArgumentException("Email et mot de passe sont requis");
+
+            var user = await _userRepository.GetUserByEmailAsync(credentials.Email);
+            if (user == null || !_passwordHasherService.VerifyPassword(credentials.Password, user.Password))
+                throw new UnauthorizedAccessException("Email ou mot de passe incorrect");
+
+            return await _jwtService.GenerateToken(user);
+        }
+
         public async Task<RegisterResponseDTO> RegisterAsync(RegisterRequestDTO credentials)
         {
             var existingUser = await _userRepository.GetUserByEmailAsync(credentials.Email);
             if (existingUser != null)
                 throw new InvalidOperationException("L'email est déjà utilisée");
 
-            // TODO: générer mot de passe aléatoire
-            var generatedPassword = "TODO";
 
-            // TODO: hacher le mot de passe
+            var generatedPassword = _passwordGeneratorService.RandomPassword();
+
+
             var hashedPassword = _passwordHasherService.HashPassword(generatedPassword);
 
             var user = new User
             {
                 Email = credentials.Email,
-                Password = hashedPassword //To do
+                Password = hashedPassword 
 
             };
 
             await _userRepository.AddAsync(user);
 
-            // TODO: envoyer email avec mot de passe provisoire
-            await _emailService.SendPasswordAsync(user.Email, generatedPassword);
+            
+            await _emailService.SendEmailAsync(user.Email, generatedPassword);
 
             return new RegisterResponseDTO
             {
