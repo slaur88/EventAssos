@@ -18,9 +18,14 @@ namespace EventAssos.Domain.Entities
         public int NbMin { get; set; }
         [Range(1,200)]
         public int NbMax { get; set; }
-        public EventCategory Category { get; set; }
         public EventStatut Statut { get; set; }
         public DateOnly CreationDate { get; set; }
 
+
+        //Navigation 
+        public Guid? CreatedByUserId { get; set; }
+        public User? CreatedBy { get; set; }
+        public ICollection<Inscription> Inscriptions { get; set; }
+        public ICollection<Categorie> Categories { get; set; }
     }
 }

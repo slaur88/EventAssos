@@ -9,5 +9,8 @@ namespace EventAssos.Domain.Entities
         public Guid Id { get; set; }
         public string Name { get; set; }
 
+        //Navigation
+        public ICollection<Event> Events { get; set; }
+
     }
 }
