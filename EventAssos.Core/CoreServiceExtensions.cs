@@ -23,6 +23,13 @@ namespace EventAssos.Core
                 .Get<EmailSettings>();
             services.AddSingleton(emailSettings);
 
+
+            //Settings Jwt
+            var jwtSettings = configuration
+                .GetSection("JwtSettings")
+                .Get<JwtSettings>();
+            services.AddSingleton(jwtSettings);
+
             // Services 
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IEmailService, EmailService>();
