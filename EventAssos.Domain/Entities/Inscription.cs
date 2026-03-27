@@ -8,7 +8,6 @@ namespace EventAssos.Domain.Entities
     public class Inscription
     {
         
-        
         //Navigation
         public Guid UserId { get; set; }
         public User User { get; set; }
