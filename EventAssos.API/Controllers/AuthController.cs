@@ -19,12 +19,10 @@ namespace EventAssos.API.Controllers
             {
                 var createdUser = await _authService.RegisterAsync(request);
 
-                return CreatedAtAction(
-                    actionName: "GetUser",
-                    controllerName: "Users",
+                return CreatedAtRoute(
+                    routeName: "GetUser",
                     routeValues: new { id = createdUser.Id },
-                    value: createdUser
-                    );
+                    value: createdUser);
             }
             catch (InvalidOperationException ex)
             {

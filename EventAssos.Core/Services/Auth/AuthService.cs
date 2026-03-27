@@ -54,8 +54,23 @@ namespace EventAssos.Core.Services.Auth
 
             await _userRepository.AddAsync(user);
 
+
+            string subject = "Bienvenue - Votre mot de passe provisoire";
+
+            //Corps du message 
+            string body = $@"
+            <html>
+                <body>
+                    <h2>Bienvenue sur EventAssos !</h2>
+                    <p>Votre compte a été créé avec succès.</p>
+                    <p>Votre identifiant: <strong>{user.Email}</strong></p>
+                    <p>Voici votre mot de passe provisoire : <strong>{generatedPassword}</strong></p>
+                    <p>Nous vous conseillons de le modifier dès votre première connexion.</p>
+                </body>
+            </html>";
+
             
-            await _emailService.SendEmailAsync(user.Email, generatedPassword);
+            await _emailService.SendEmailAsync(user.Email, subject, body);
 
             return new RegisterResponseDTO
             {

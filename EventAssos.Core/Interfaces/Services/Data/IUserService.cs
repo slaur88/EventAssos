@@ -10,5 +10,6 @@ namespace EventAssos.Core.Interfaces.Services.Data
     public interface IUserService : IBaseService<User, Guid>
     {
         Task UpdatePseudo(Guid userId, string newPseudo);
+        Task<User?> GetByIdAsync(Guid id);
     }
 }
