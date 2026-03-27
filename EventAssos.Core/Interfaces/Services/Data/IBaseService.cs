@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EventAssos.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,6 +9,6 @@ namespace EventAssos.Core.Interfaces.Services.Data
     where TEntity : class
     where TKey : struct 
     {
-
+        Task<User?> DeleteAsync(Guid id);
     }
 }
