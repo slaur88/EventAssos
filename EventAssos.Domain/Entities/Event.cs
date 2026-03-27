@@ -14,9 +14,7 @@ namespace EventAssos.Domain.Entities
         public string? lieu {  get; set; }
         public DateTime start { get; set; }
         public DateTime end { get; set; }
-        [Range(1,200)]
         public int NbMin { get; set; }
-        [Range(1,200)]
         public int NbMax { get; set; }
         public EventStatut Statut { get; set; }
         public DateOnly CreationDate { get; set; }
