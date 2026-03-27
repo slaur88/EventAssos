@@ -19,7 +19,7 @@ namespace EventAssos.Core.Interfaces.Repositories
 
 
         Task<TEntity> AddAsync(TEntity entity);
-        Task UpdateAsync(TKey id, TEntity entity);
+        Task UpdateAsync( TEntity entity);
         Task DeleteAsync(TKey id);
     }
 }

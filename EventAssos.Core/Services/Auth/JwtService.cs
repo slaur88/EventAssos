@@ -25,6 +25,7 @@ public class JwtService(IConfiguration configuration) : IJwtService
             // Claims standard
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
 
             // Claims personnalisés

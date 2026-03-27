@@ -8,8 +8,11 @@ namespace EventAssos.Core.Interfaces.Repositories
     //Création de l'interface qui sera implémentée après
     public interface IUserRepository: IBaseRepository<User, Guid>
     {
-        Task<User?> GetUserByEmailAsync(string email);
+        Task<User?> GetByEmailOrPseudoAsync(string identifier);
+
         Task<User?> GetUserByPseudoAsync(string pseudo);
+
+        Task<User?> GetUserByEmailAsync(string email);
 
         
     }

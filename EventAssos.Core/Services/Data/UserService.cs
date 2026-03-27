@@ -2,14 +2,32 @@
 using EventAssos.Core.DTOs.Responses;
 using EventAssos.Core.Interfaces.Repositories;
 using EventAssos.Core.Interfaces.Services;
+using EventAssos.Core.Interfaces.Services.Data;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace EventAssos.Core.Services.Data
 {
-    public class UserService
+    public class UserService(IUserRepository _userRepository) : IUserService
     {
-        
+        public async Task UpdatePseudo(Guid userId, string newPseudo)
+        {
+            // 1. On vérifie si le pseudo est déjà pris
+            var existingUser = await _userRepository.GetUserByPseudoAsync(newPseudo);
+
+            if (existingUser != null && existingUser.Id != userId)
+            {
+                throw new InvalidOperationException("Ce pseudo est déjà utilisé par un autre membre.");
+            }
+
+            // 2. On récupère l'utilisateur à modifier
+            var user = await _userRepository.GetByIdAsync(userId);
+            if (user == null) throw new KeyNotFoundException("Utilisateur non trouvé.");
+
+            // 3. On applique le changement et on sauvegarde
+            user.Pseudo = newPseudo;
+            await _userRepository.UpdateAsync(user);
+        }
     }
 }

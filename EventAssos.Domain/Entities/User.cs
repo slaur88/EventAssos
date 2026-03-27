@@ -14,5 +14,10 @@ namespace EventAssos.Domain.Entities
         public DateOnly? Birthdate { get; set; }
         public UserGenre? UserGenre { get; set; }
         public UserRole? Role { get; set; }
+
+
+        //Navigation
+        public ICollection<Event> CreatedEvents { get; set; }
+        public ICollection<Inscription> Inscriptions { get; set; }
     }
 }
