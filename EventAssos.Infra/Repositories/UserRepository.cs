@@ -12,14 +12,23 @@ namespace EventAssos.Infra.Repositories
         : BaseRepository<User, Guid>(_context), IUserRepository
         
     {
-        public async Task<User?> GetUserByEmailAsync(string email)
-        {
-            return await _entities.FirstOrDefaultAsync(u => u.Email == email);
-        }
-
         public async Task<User?> GetUserByPseudoAsync(string pseudo)
         {
-            return await _entities.FirstOrDefaultAsync(u => u.Pseudo == pseudo);
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.Pseudo == pseudo);
         }
+        public async Task<User?> GetByEmailOrPseudoAsync(string identifier)
+        {
+            return await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == identifier || u.Pseudo == identifier);
+        }
+
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _entities.FirstOrDefaultAsync(e => e.Email == email);
+        }
+
+        
     }
+    
 }

@@ -49,7 +49,7 @@ namespace EventAssos.Infra.Repositories
             return await _entities.FindAsync(id);
         }
 
-        public async Task UpdateAsync(TKey id, TEntity entity)
+        public async Task UpdateAsync(TEntity entity)
         {
             _entities.Update(entity);
             await _context.SaveChangesAsync();

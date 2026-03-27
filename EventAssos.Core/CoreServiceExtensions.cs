@@ -28,6 +28,7 @@ namespace EventAssos.Core
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IPasswordHasherService, PasswordHasherService>();
             services.AddScoped<IPasswordGeneratorService, PasswordGeneratorService>();
+            services.AddScoped<IJwtService, JwtService>();
 
             return services;
         }

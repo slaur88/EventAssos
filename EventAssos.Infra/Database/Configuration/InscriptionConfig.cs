@@ -24,12 +24,14 @@ namespace EventAssos.Infra.Database.Configuration
             
             builder.HasOne(i => i.User)
                    .WithMany(u => u.Inscriptions)
-                   .HasForeignKey(i => i.UserId);
+                   .HasForeignKey(i => i.UserId)
+                   .OnDelete(DeleteBehavior.Restrict); ;
 
             
             builder.HasOne(i => i.Event)
                    .WithMany(e => e.Inscriptions)
-                   .HasForeignKey(i => i.EventId);
+                   .HasForeignKey(i => i.EventId)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

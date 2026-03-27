@@ -30,7 +30,8 @@ namespace EventAssos.Infra.Database.Configuration
             .HasMaxLength(50);
 
             builder.HasIndex(u => u.Pseudo)
-            .IsUnique();
+            .IsUnique()
+            .HasFilter("[Pseudo] IS NOT NULL"); //Le pseudo doit être unique, SAUF s'il est nul
 
             builder.Property(u => u.Password)
             .HasMaxLength(255);

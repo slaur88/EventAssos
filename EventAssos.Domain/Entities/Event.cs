@@ -8,9 +8,9 @@ namespace EventAssos.Domain.Entities
 {
     public class Event
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public required string Name { get; set; }
-        public string Description { get; set; } 
+        public string Description { get; set; }= string.Empty;
         public string? lieu {  get; set; }
         public DateTime start { get; set; }
         public DateTime end { get; set; }
@@ -21,11 +21,16 @@ namespace EventAssos.Domain.Entities
         public EventStatut Statut { get; set; }
         public DateOnly CreationDate { get; set; }
 
+        public DateTime LimiteInscription { get; set; }
+
+        public DateTime MiseAJour { get; set; } 
+        public bool ListeAttenteActive { get; set; }
+
 
         //Navigation 
         public Guid? CreatedByUserId { get; set; }
         public User? CreatedBy { get; set; }
-        public ICollection<Inscription> Inscriptions { get; set; }
-        public ICollection<Categorie> Categories { get; set; }
+        public ICollection<Inscription> Inscriptions { get; set; } = new List<Inscription>();
+        public ICollection<Categorie> Categories { get; set; } = new List<Categorie>();
     }
 }

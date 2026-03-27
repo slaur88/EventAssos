@@ -21,12 +21,14 @@ namespace EventAssos.Core.Services.Auth
     {
         public async Task<LoginResponseDto> Login(LoginRequestDTO credentials)
         {
-            if (string.IsNullOrWhiteSpace(credentials.Email) || string.IsNullOrWhiteSpace(credentials.Password))
-                throw new ArgumentException("Email et mot de passe sont requis");
+            // On cherche l'utilisateur par l'identifiant fourni (mail ou pseudo)
+            var user = await _userRepository.GetByEmailOrPseudoAsync(credentials.Identifier);
 
-            var user = await _userRepository.GetUserByEmailAsync(credentials.Email);
+            // Si l'utilisateur n'existe pas ou que le mot de passe est faux
             if (user == null || !_passwordHasherService.VerifyPassword(credentials.Password, user.Password))
-                throw new UnauthorizedAccessException("Email ou mot de passe incorrect");
+            {
+                throw new UnauthorizedAccessException("Identifiant ou mot de passe incorrect");
+            }
 
             return await _jwtService.GenerateToken(user);
         }

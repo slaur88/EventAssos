@@ -44,7 +44,7 @@ namespace EventAssos.Infra.Database.Configuration
             builder.HasOne(e => e.CreatedBy)
                .WithMany(u => u.CreatedEvents)
                .HasForeignKey(e => e.CreatedByUserId)
-               .OnDelete(DeleteBehavior.Cascade);
+               .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(e => e.Categories)
                 .WithMany(c => c.Events);
