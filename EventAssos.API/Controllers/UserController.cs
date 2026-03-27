@@ -41,5 +41,15 @@ namespace EventAssos.API.Controllers
                 return StatusCode(500, new { error = "Une erreur interne est survenue." });
             }
         }
+
+        [HttpGet("{id}", Name = "GetUser")]
+        [AllowAnonymous] //Pour consulter le profil créé sans token immédiatement
+        public async Task<IActionResult> GetById(Guid id)
+        {
+            var user = await _userService.GetByIdAsync(id);
+            if (user == null) return NotFound();
+
+            return Ok(user);
+        }
     }
 }

@@ -3,6 +3,7 @@ using EventAssos.Core.DTOs.Responses;
 using EventAssos.Core.Interfaces.Repositories;
 using EventAssos.Core.Interfaces.Services;
 using EventAssos.Core.Interfaces.Services.Data;
+using EventAssos.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,6 +12,11 @@ namespace EventAssos.Core.Services.Data
 {
     public class UserService(IUserRepository _userRepository) : IUserService
     {
+        public async Task<User?> GetByIdAsync(Guid id)
+        {
+            return await _userRepository.GetByIdAsync(id);
+        }
+
         public async Task UpdatePseudo(Guid userId, string newPseudo)
         {
             // 1. On vérifie si le pseudo est déjà pris
