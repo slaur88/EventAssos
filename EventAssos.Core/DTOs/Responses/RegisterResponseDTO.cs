@@ -13,6 +13,6 @@ namespace EventAssos.Core.DTOs.Responses
       
         public string Email { get; set; }
 
-        
+
     }
 }

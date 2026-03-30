@@ -2,6 +2,7 @@
 using EventAssos.Domain.Entities;
 using EventAssos.Domain.Enums;
 using EventAssos.Infra.Database.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -13,9 +14,11 @@ namespace EventAssos.Infra.Repositories
     public class EventRepository(EventAssosContext _context)
         : BaseRepository<Event, Guid>(_context), IEventRepository
     {
-        public Task<Event?> GetByIdWithDetailsAsync(Guid id)
+        public async Task<Event?> GetByIdWithDetailsAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Events.Include(e => e.Inscriptions) //Pour récupérer les inscriptions 
+                .Include(e => e.Categories) //Pour récupérer les catégories
+                .FirstOrDefaultAsync(e => e.Id == id);
         }
     }
 }
