@@ -2,6 +2,8 @@
 using EventAssos.Core.Interfaces.Repositories;
 using EventAssos.Core.Interfaces.Services.Data;
 using EventAssos.Domain.Entities;
+using EventAssos.Domain.Enums;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,9 +12,15 @@ namespace EventAssos.Core.Services.Data
 {
     public class EventService(IEventRepository _eventRepository) : IEventService
     {
-        public Task DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid eventId)
         {
-            throw new NotImplementedException();
+            var eve= await _eventRepository.GetByIdAsync(eventId) 
+                ?? throw new KeyNotFoundException("Événement introuvable.");
+
+            if (eve.Statut != EventStatut.EnAttente)
+                throw new InvalidOperationException("Seuls les événements 'en attente' peuvent être supprimés.");
+
+            await _eventRepository.DeleteAsync(eventId);
         }
 
         public Task<Event> UpdateAsync(Guid eventId, UpdateEventRequestDTO eventdto)
