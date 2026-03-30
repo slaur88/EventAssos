@@ -15,7 +15,8 @@ namespace EventAssos.Core.Interfaces.Repositories
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity?> GetByIdAsync(TKey id);
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
-        
+        Task<bool> ExistsAsync(TKey id);
+
 
 
         Task<TEntity> AddAsync(TEntity entity);

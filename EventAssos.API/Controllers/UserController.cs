@@ -65,11 +65,17 @@ namespace EventAssos.API.Controllers
             try
             {
                 await _userService.DeleteAsync(id);
-                return Ok();
+                //  204 car la ressource n'existe plus
+                return NoContent();
             }
             catch (KeyNotFoundException ex)
             {
                 return NotFound(new { Error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                
+                return StatusCode(500, new { Error = "Une erreur interne est survenue lors de la suppression." });
             }
         }
     }
