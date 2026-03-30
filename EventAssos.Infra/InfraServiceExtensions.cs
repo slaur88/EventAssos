@@ -19,6 +19,7 @@ namespace EventAssos.Infra
             services.AddDbContext<EventAssosContext>(options => options.UseSqlServer(connectionString));
 
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IEventRepository, EventRepository>();
 
         }
     }

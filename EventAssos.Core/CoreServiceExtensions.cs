@@ -1,6 +1,9 @@
-﻿using EventAssos.Core.Interfaces.Services.Auth;
+﻿using EventAssos.Core.Interfaces.Repositories;
+using EventAssos.Core.Interfaces.Services.Auth;
+using EventAssos.Core.Interfaces.Services.Data;
 using EventAssos.Core.Interfaces.Services.Tools;
 using EventAssos.Core.Services.Auth;
+using EventAssos.Core.Services.Data;
 using EventAssos.Core.Services.Tools;
 using EventAssos.Core.Settings;
 using Microsoft.Extensions.Configuration;
@@ -36,6 +39,9 @@ namespace EventAssos.Core
             services.AddScoped<IPasswordHasherService, PasswordHasherService>();
             services.AddScoped<IPasswordGeneratorService, PasswordGeneratorService>();
             services.AddScoped<IJwtService, JwtService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IEventService, EventService>();
+            
 
             return services;
         }
