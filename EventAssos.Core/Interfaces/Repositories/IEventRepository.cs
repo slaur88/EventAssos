@@ -1,0 +1,13 @@
+﻿using EventAssos.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace EventAssos.Core.Interfaces.Repositories
+{
+    public interface IEventRepository : IBaseRepository<EventArgs, Guid>
+    {
+        Task<Event?> GetByIdWithDetailsAsync(Guid id); 
+        
+    }
+}
