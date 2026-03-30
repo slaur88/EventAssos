@@ -54,5 +54,10 @@ namespace EventAssos.Infra.Repositories
             _entities.Update(entity);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> ExistsAsync(TKey id)
+        {
+            return await Task.FromResult(_entities.Find(id) != null);
+        }
     }
 }
