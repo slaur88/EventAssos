@@ -12,6 +12,8 @@ namespace EventAssos.Core.Services.Data
 {
     public class UserService(IUserRepository _userRepository) : IUserService
     {
+        
+
         public async Task<User?> GetByIdAsync(Guid id)
         {
             return await _userRepository.GetByIdAsync(id);
@@ -34,6 +36,13 @@ namespace EventAssos.Core.Services.Data
             // 3. On applique le changement et on sauvegarde
             user.Pseudo = newPseudo;
             await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task DeleteAsync(Guid id)
+        {
+            var existingUser = await _userRepository.ExistsAsync(id);
+            if (!existingUser) throw new KeyNotFoundException("Id not found");
+            await _userRepository.DeleteAsync(id);
         }
     }
 }

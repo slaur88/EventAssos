@@ -11,5 +11,7 @@ namespace EventAssos.Core.Interfaces.Services.Data
     {
         Task UpdatePseudo(Guid userId, string newPseudo);
         Task<User?> GetByIdAsync(Guid id);
+
+        
     }
 }

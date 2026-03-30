@@ -11,7 +11,8 @@ namespace EventAssos.API.Controllers
     [Route("api/[controller]")]
     [Authorize] // Sécurise tout le contrôleur
     public class UserController(IUserService _userService) : ControllerBase
-    {
+    {   
+        //PATCH
         [HttpPatch("update-pseudo")]
         public async Task<IActionResult> UpdatePseudo([FromBody] UpdatePseudoRequestDTO request)
         {
@@ -42,6 +43,8 @@ namespace EventAssos.API.Controllers
             }
         }
 
+
+        //GET BY ID
         [HttpGet("{id}", Name = "GetUser")]
         [AllowAnonymous] //Pour consulter le profil créé sans token immédiatement
         public async Task<IActionResult> GetById(Guid id)
@@ -50,6 +53,30 @@ namespace EventAssos.API.Controllers
             if (user == null) return NotFound();
 
             return Ok(user);
+        }
+
+        //DELETE
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteUser([FromRoute] Guid id)
+        {
+            try
+            {
+                await _userService.DeleteAsync(id);
+                //  204 car la ressource n'existe plus
+                return NoContent();
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { Error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                
+                return StatusCode(500, new { Error = "Une erreur interne est survenue lors de la suppression." });
+            }
         }
     }
 }
