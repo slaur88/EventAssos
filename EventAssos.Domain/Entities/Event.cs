@@ -24,6 +24,8 @@ namespace EventAssos.Domain.Entities
         public DateTime MiseAJour { get; set; } 
         public bool ListeAttenteActive { get; set; }
 
+        public byte[]? Img {  get; set; }
+
 
         //Navigation 
         public Guid? CreatedByUserId { get; set; }
