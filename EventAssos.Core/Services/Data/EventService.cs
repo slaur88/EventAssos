@@ -1,6 +1,7 @@
 ﻿using EventAssos.Core.DTOs.Requests;
 using EventAssos.Core.Interfaces.Repositories;
 using EventAssos.Core.Interfaces.Services.Data;
+using EventAssos.Core.Objects;
 using EventAssos.Domain.Entities;
 using EventAssos.Domain.Enums;
 using Microsoft.Extensions.Logging;
@@ -12,6 +13,17 @@ namespace EventAssos.Core.Services.Data
 {
     public class EventService(IEventRepository _eventRepository) : IEventService
     {
+        public async Task<ResultPattern<Event>> CancelAsync(Guid eventId)//Avec ResultPattern
+        {
+            var eve = await _eventRepository.GetByIdAsync(eventId);
+            if (eve == null) return ResultPattern<Event>.Failure("Événement introuvable.");
+            if (eve.Statut != EventStatut.EnCours)
+                return ResultPattern<Event>.Failure("Seuls les événements 'en cours' peuvent être annulés.");
+            eve.Statut = EventStatut.Annulé;
+            await _eventRepository.UpdateAsync(eve);
+            return ResultPattern<Event>.Success(eve);
+        }
+
         public async Task DeleteAsync(Guid eventId)
         {
             var eve= await _eventRepository.GetByIdAsync(eventId) 

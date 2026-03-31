@@ -9,6 +9,7 @@ namespace EventAssos.Core.Interfaces.Services.Data
     where TEntity : class
     where TKey : struct 
     {
+
         Task DeleteAsync(TKey id);
     }
 }

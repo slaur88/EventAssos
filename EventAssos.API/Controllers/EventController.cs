@@ -1,5 +1,6 @@
 ﻿using EventAssos.Core.DTOs.Requests;
 using EventAssos.Core.Interfaces.Services.Data;
+using EventAssos.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,30 @@ namespace EventAssos.API.Controllers
     [Authorize]
     public class EventController(IEventService _eventService) : ControllerBase
     {
+        //Patch/Cancel avec ResultPattern
+        [HttpPatch("{id}/cancel")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(Event), StatusCodes.Status200OK)] 
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> CancelAsync([FromRoute] Guid id)
+        {
+            
+            var result = await _eventService.CancelAsync(id);
+
+            if (result.IsFailure)
+            {
+                
+                if (result.ErrorMessage == "Événement introuvable.")
+                {
+                    return NotFound(new { message = result.ErrorMessage });
+                }
+
+                return BadRequest(new { message = result.ErrorMessage });
+            }
+
+            return Ok(result.Data);
+        }
 
         //Delete
         [HttpDelete("{id}")]
