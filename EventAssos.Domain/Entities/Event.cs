@@ -11,9 +11,9 @@ namespace EventAssos.Domain.Entities
         public Guid Id { get; set; }
         public required string Name { get; set; }
         public string Description { get; set; }= string.Empty;
-        public string? lieu {  get; set; }
-        public DateTime start { get; set; }
-        public DateTime end { get; set; }
+        public string? Lieu {  get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
         public int NbMin { get; set; }
         public int NbMax { get; set; }
         public EventStatut Statut { get; set; }

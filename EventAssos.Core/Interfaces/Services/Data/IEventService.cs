@@ -11,5 +11,7 @@ namespace EventAssos.Core.Interfaces.Services.Data
     {
         Task<Event> UpdateAsync(Guid eventId, UpdateEventRequestDTO eventdto);
         Task<ResultPattern<Event>> CancelAsync(Guid eventId);
+
+        Task<ResultPattern<Event>> CreateEventAsync(AddEventRequestDto eventdto);
     }
 }
