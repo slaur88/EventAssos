@@ -11,7 +11,7 @@ using System.Text;
 
 namespace EventAssos.Secu.Services.Auth
 {
-    public class JwtServices(IConfiguration configuration) : IJwtService
+    public class JwtService(IConfiguration configuration) : IJwtService
     {
         public Task<LoginResponseDto> GenerateToken(User user)
         {
