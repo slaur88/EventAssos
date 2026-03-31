@@ -29,7 +29,7 @@ namespace EventAssos.Secu.Services.Auth
             new Claim(JwtRegisteredClaimNames.Email, user.Email),
 
             // Claims personnalisés
-            new Claim("role", user.Role.ToString())
+            new Claim("role", user.Role.ToString()?? "User")
         };
 
             // Génération du JWT Token
