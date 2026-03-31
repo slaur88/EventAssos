@@ -1,5 +1,6 @@
 ﻿using EventAssos.Domain.Entities;
 using EventAssos.Domain.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -34,6 +35,8 @@ public class AddEventRequestDto
     public DateTime LimiteInscription { get; set; }
     public bool ListeAttenteActive { get; set; }
     public List<Guid> CategorieIds { get; set; } = new();
+
+    public IFormFile? Img {  get; set; }
 
 
 

@@ -26,11 +26,11 @@ namespace EventAssos.Infra.Database.Configuration
 
             builder.Property(e => e.Description);
 
-            builder.Property(e => e.lieu);
+            builder.Property(e => e.Lieu);
 
-            builder.Property(e => e.start);
+            builder.Property(e => e.Start);
 
-            builder.Property(e => e.end);
+            builder.Property(e => e.End);
 
             builder.Property(e => e.NbMin);
 

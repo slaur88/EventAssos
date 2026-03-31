@@ -1,6 +1,7 @@
 ﻿using EventAssos.Core.DTOs.Requests;
 using EventAssos.Core.Interfaces.Repositories;
 using EventAssos.Core.Interfaces.Services.Data;
+using EventAssos.Core.Interfaces.Services.Tools;
 using EventAssos.Core.Objects;
 using EventAssos.Domain.Entities;
 using EventAssos.Domain.Enums;
@@ -12,7 +13,8 @@ using System.Text;
 
 namespace EventAssos.Core.Services.Data
 {
-    public class EventService(IEventRepository _eventRepository, ICategorieRepository _categorieRepository) : IEventService
+    public class EventService(IEventRepository _eventRepository, 
+        ICategorieRepository _categorieRepository, IUserRepository _userRepository, IEmailService _emailService) : IEventService
     {
         public async Task<ResultPattern<Event>> CreateEventAsync(AddEventRequestDto eventdto)
         {
@@ -47,7 +49,16 @@ namespace EventAssos.Core.Services.Data
                 LimiteInscription= eventdto.LimiteInscription,
                 MiseAJour= DateTime.UtcNow,
                 ListeAttenteActive = eventdto.ListeAttenteActive,
-            };
+
+                
+        };
+
+            if (eventdto.Img != null)
+            {
+                using var ms = new MemoryStream();
+                await eventdto.Img.CopyToAsync(ms);
+                newEvent.Img = ms.ToArray();
+            }
 
             var categories = await _categorieRepository.GetByIdsAsync(eventdto.CategorieIds);
 
@@ -56,7 +67,32 @@ namespace EventAssos.Core.Services.Data
             
             var result = await _eventRepository.AddAsync(newEvent);
 
-            
+
+            var allUsers = await _userRepository.GetAllAsync();
+
+            foreach (var user in allUsers)
+
+            {
+                string subject = $"Nouvel événement : {newEvent.Name}";
+
+                 
+                string body = $@"
+                <html>
+                    <body>
+                        <h2> Nouvel événement disponible !</h2>
+                        <p>Un nouvel événement vient d'être ajouté sur EventAssos !</p>
+                        <p><strong>{newEvent.Name}</strong></p>
+                        <p>{newEvent.Description}</p>
+                        <p>Date : {newEvent.Start}</p>
+                        <p>Lieu : {newEvent.Lieu ?? "À définir"}</p>
+                        <p>Connectez-vous pour vous inscrire !</p>
+                    </body>
+                </html>";
+
+                await _emailService.SendEmailAsync(user.Email, subject, body);
+            }
+
+
             return ResultPattern<Event>.Success(result);
         }
 
