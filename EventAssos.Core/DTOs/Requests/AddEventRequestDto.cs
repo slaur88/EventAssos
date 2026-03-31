@@ -20,8 +20,21 @@ public class AddEventRequestDto
     [Required]
     [Range(1, 200, ErrorMessage = "Le nombre maximum de participants doit être supérieur ou égal à 1.")]
     public int NbMax { get; set; }
-    [Required(ErrorMessage = "Le statut de l'événement est requis.")]
-    public EventStatut Statut { get; set; }
+
+    [MaxLength(200)]
+    public string? Lieu { get; set; }
+
+    [Required]
+    public DateTime Start { get; set; }
+
+    [Required]
+    public DateTime End { get; set; }
+
+    [Required]
+    public DateTime LimiteInscription { get; set; }
+    public bool ListeAttenteActive { get; set; }
+    public List<Guid> CategorieIds { get; set; } = new();
+
 
 
 

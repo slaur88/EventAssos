@@ -12,6 +12,24 @@ namespace EventAssos.API.Controllers
     [Authorize]
     public class EventController(IEventService _eventService) : ControllerBase
     {
+        //Post avec ResultPattern
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(Event), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateEventAsync([FromBody] AddEventRequestDto dto) 
+        {
+            var result = await _eventService.CreateEventAsync(dto);
+            if (result.IsFailure)
+            {
+                return BadRequest(new { message = result.ErrorMessage });
+            }
+
+            return Ok(result.Data);
+        }
+       
+
+
         //Patch/Cancel avec ResultPattern
         [HttpPatch("{id}/cancel")]
         [Authorize(Roles = "Admin")]

@@ -20,6 +20,7 @@ namespace EventAssos.Infra
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<ICategorieRepository, CategorieRepository>();
 
         }
     }
