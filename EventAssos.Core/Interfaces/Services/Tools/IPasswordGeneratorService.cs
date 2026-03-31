@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EventAssos.Core.Interfaces.Services.Tools
+namespace EventAssos.Secu.Interfaces.Services.Tools
 {
     public interface IPasswordGeneratorService
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EventAssos.Core.Settings
+namespace EventAssos.Secu.Settings
 {
     public class JwtSettings
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace EventAssos.Core.DTOs.Requests
+namespace EventAssos.Secu.DTOs.Requests
 {
     public class UpdatePseudoRequestDTO
     {

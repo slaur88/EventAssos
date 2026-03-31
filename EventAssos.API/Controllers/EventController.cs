@@ -1,5 +1,5 @@
-﻿using EventAssos.Core.DTOs.Requests;
-using EventAssos.Core.Interfaces.Services.Data;
+﻿using EventAssos.Secu.DTOs.Requests;
+using EventAssos.Secu.Interfaces.Services.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

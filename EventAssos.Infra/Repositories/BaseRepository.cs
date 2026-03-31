@@ -1,4 +1,4 @@
-﻿using EventAssos.Core.Interfaces.Repositories;
+﻿using EventAssos.Secu.Interfaces.Repositories;
 using EventAssos.Infra.Database.Context;
 using Microsoft.EntityFrameworkCore;
 using System;

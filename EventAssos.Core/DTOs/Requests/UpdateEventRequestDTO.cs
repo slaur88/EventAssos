@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EventAssos.Core.DTOs.Requests
+namespace EventAssos.Secu.DTOs.Requests
 {
     public class UpdateEventRequestDTO
     {

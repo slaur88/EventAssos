@@ -1,19 +1,19 @@
-﻿using EventAssos.Core.Interfaces.Services.Tools;
+﻿using EventAssos.Secu.Interfaces.Services.Tools;
 using Konscious.Security.Cryptography;
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace EventAssos.Core.Services.Tools
-{
+namespace EventAssos.Secu.Services.Tools;
+
     internal class PasswordHasherService : IPasswordHasherService
     {
-        private const int SaltSize = 16;             
-        private const int HashSize = 32;              
-        private const int Iterations = 4;             
-        private const int MemorySize = 65536;         
-        private const int DegreeOfParallelism = 2;    
+        private const int SaltSize = 16;
+        private const int HashSize = 32;
+        private const int Iterations = 4;
+        private const int MemorySize = 65536;
+        private const int DegreeOfParallelism = 2;
 
         public string HashPassword(string password)
         {
@@ -56,4 +56,4 @@ namespace EventAssos.Core.Services.Tools
             return CryptographicOperations.FixedTimeEquals(storedHash, computedHash);
         }
     }
-}
+

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EventAssos.Core.Interfaces.Services.Data
+namespace EventAssos.Secu.Interfaces.Services.Data
 {
    public interface IBaseService<TEntity, TKey>
     where TEntity : class

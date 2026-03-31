@@ -1,7 +1,6 @@
-﻿using EventAssos.Core.DTOs.Requests;
-using EventAssos.Core.DTOs.Responses;
-using EventAssos.Core.Interfaces.Services.Auth;
-using EventAssos.Core.Services.Auth;
+﻿using EventAssos.Secu.DTOs.Requests;
+using EventAssos.Secu.DTOs.Responses;
+using EventAssos.Secu.Interfaces.Services.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace EventAssos.Core.Interfaces.Repositories
+namespace EventAssos.Secu.Interfaces.Repositories
 {
     //Creation du CRUD Générique
     public interface IBaseRepository<TEntity, TKey>

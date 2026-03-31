@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-namespace EventAssos.Core.Interfaces.Repositories
+namespace EventAssos.Secu.Interfaces.Repositories
 {
     public interface IEventRepository : IBaseRepository<Event, Guid>
     {
