@@ -3,4 +3,5 @@
   <Project Path="EventAssos.Core/EventAssos.Core.csproj" />
   <Project Path="EventAssos.Domain/EventAssos.Domain.csproj" />
   <Project Path="EventAssos.Infra/EventAssos.Infra.csproj" />
+  <Project Path="EventAssos.Secu/EventAssos.Secu.csproj" Id="0bca1d35-d930-4318-a824-c3784a7d3465" />
 </Solution>

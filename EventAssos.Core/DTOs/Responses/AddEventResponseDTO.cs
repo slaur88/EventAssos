@@ -1,10 +1,11 @@
-﻿using EventAssos.Domain.Entities;
+﻿using EventAssos.Core.DTOs.Responses;
+using EventAssos.Domain.Entities;
 using EventAssos.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EventAssos.Core.DTOs.Responses
+namespace EventAssos.Secu.DTOs.Responses
 {
     public class AddEventResponseDTO
     {

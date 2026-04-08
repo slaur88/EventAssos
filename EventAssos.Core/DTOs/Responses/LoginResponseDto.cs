@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EventAssos.Core.DTOs.Responses;
+namespace EventAssos.Secu.DTOs.Responses;
 
 public class LoginResponseDto
 {

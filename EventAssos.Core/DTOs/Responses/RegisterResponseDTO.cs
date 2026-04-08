@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EventAssos.Core.DTOs.Responses
+namespace EventAssos.Secu.DTOs.Responses
 {
     //Création Dto de responde du register
     public class RegisterResponseDTO

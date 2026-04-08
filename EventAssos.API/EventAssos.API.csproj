@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EventAssos.Core\EventAssos.Core.csproj" />
     <ProjectReference Include="..\EventAssos.Infra\EventAssos.Infra.csproj" />
+    <ProjectReference Include="..\EventAssos.Secu\EventAssos.Secu.csproj" />
   </ItemGroup>
 
 </Project>

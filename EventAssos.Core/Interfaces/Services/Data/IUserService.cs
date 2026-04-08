@@ -1,11 +1,11 @@
-﻿using EventAssos.Core.DTOs.Requests;
-using EventAssos.Core.DTOs.Responses;
+﻿using EventAssos.Secu.DTOs.Requests;
+using EventAssos.Secu.DTOs.Responses;
 using EventAssos.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EventAssos.Core.Interfaces.Services.Data
+namespace EventAssos.Secu.Interfaces.Services.Data
 {
     public interface IUserService : IBaseService<User, Guid>
     {

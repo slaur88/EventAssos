@@ -1,4 +1,4 @@
-﻿using EventAssos.Core.Interfaces.Repositories;
+﻿using EventAssos.Secu.Interfaces.Repositories;
 using EventAssos.Infra.Database.Context;
 using EventAssos.Infra.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using EventAssos.Core.Interfaces.Repositories;
 
 namespace EventAssos.Infra
 {

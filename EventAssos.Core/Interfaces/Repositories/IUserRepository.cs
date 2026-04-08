@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EventAssos.Core.Interfaces.Repositories
+namespace EventAssos.Secu.Interfaces.Repositories
 {    
     //Création de l'interface qui sera implémentée après
     public interface IUserRepository: IBaseRepository<User, Guid>

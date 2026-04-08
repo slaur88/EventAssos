@@ -1,10 +1,11 @@
-﻿using EventAssos.Core.DTOs.Requests;
-using EventAssos.Core.DTOs.Responses;
+﻿
+using EventAssos.Secu.DTOs.Requests;
+using EventAssos.Secu.DTOs.Responses;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace EventAssos.Core.Interfaces.Services.Auth
+namespace EventAssos.Secu.Interfaces.Services.Auth
 {
     public interface IAuthService
     {
