@@ -1,4 +1,5 @@
-﻿using EventAssos.Secu.DTOs.Requests;
+﻿
+using EventAssos.Secu.DTOs.Requests;
 using EventAssos.Secu.DTOs.Responses;
 using System;
 using System.Collections.Generic;

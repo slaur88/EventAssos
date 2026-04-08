@@ -2,6 +2,9 @@
 using EventAssos.Secu.Interfaces.Services.Auth;
 using EventAssos.Secu.Interfaces.Services.Data;
 using EventAssos.Secu.Interfaces.Services.Tools;
+using EventAssos.Secu.Services.Auth;
+using EventAssos.Secu.Services.Data;
+using EventAssos.Secu.Services.Tools;
 using EventAssos.Secu.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
