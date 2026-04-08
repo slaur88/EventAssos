@@ -17,4 +17,8 @@
     <ProjectReference Include="..\EventAssos.Domain\EventAssos.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Data\" />
+  </ItemGroup>
+
 </Project>
