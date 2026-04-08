@@ -3,11 +3,14 @@ using EventAssos.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using EventAssos.Core.Objects;
 
-namespace EventAssos.Secu.Interfaces.Services.Data
+namespace EventAssos.Secu.Interfaces.Services.Data;
+
+public interface IEventService: IBaseService<Event, Guid>
 {
-    public interface IEventService: IBaseService<Event, Guid>
-    {
-        Task<Event> UpdateAsync(Guid eventId, UpdateEventRequestDTO eventdto);
-    }
+    Task<Event> UpdateAsync(Guid eventId, UpdateEventRequestDTO eventdto);
+    Task<ResultPattern<Event>> CancelAsync(Guid eventId);
+
+    Task<ResultPattern<Event>> CreateEventAsync(AddEventRequestDto eventdto);
 }

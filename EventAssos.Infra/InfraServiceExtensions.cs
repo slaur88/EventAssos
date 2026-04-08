@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using EventAssos.Core.Interfaces.Repositories;
 
 namespace EventAssos.Infra
 {
@@ -20,6 +21,7 @@ namespace EventAssos.Infra
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<ICategorieRepository, CategorieRepository>();
 
         }
     }
