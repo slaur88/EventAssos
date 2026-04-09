@@ -8,7 +8,9 @@ namespace EventAssos.Secu.Interfaces.Repositories
 {
     public interface IEventRepository : IBaseRepository<Event, Guid>
     {
-        Task<Event?> GetByIdWithDetailsAsync(Guid id); 
-        
+        Task<Event?> GetByIdWithDetailsAsync(Guid id);
+        Task<IEnumerable<Event>> GetAllAsync();
+
+
     }
 }
