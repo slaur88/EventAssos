@@ -59,5 +59,10 @@ namespace EventAssos.Infra.Repositories
         {
             return await Task.FromResult(_entities.Find(id) != null);
         }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
     }
 }

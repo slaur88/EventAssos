@@ -7,6 +7,7 @@ namespace EventAssos.Domain.Enums
     public enum StatutInscription
     {
         Confirme,
-        ListeAttente
+        ListeAttente,
+        PasInscrit,
     }
 }

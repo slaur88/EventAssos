@@ -17,10 +17,10 @@ namespace EventAssos.Secu.Interfaces.Repositories
         Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> predicate);
         Task<bool> ExistsAsync(TKey id);
 
-
-
         Task<TEntity> AddAsync(TEntity entity);
         Task UpdateAsync( TEntity entity);
         Task DeleteAsync(TKey id);
+
+        Task<int> SaveChangesAsync();
     }
 }

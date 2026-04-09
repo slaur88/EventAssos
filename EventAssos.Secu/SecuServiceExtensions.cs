@@ -14,9 +14,9 @@ using System.Text;
 
 namespace EventAssos.Secu;
 
-public static class CoreServiceExtensions
+public static class SecuServiceExtensions
 {
-    public static IServiceCollection AddCoreServices(
+    public static IServiceCollection AddSecuServices(
     this IServiceCollection services,
     IConfiguration configuration)
     {
