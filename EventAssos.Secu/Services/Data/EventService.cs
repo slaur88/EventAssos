@@ -292,4 +292,50 @@ namespace EventAssos.Secu.Services.Data;
             Categories = e.Categories?.Select(c => c.Name).ToList() ?? new List<string>()
         };
     }
+
+
+    public async Task<GetEventDetailResponseDTO?> GetEventByIdAsync(Guid id)
+    {
+        // On utilise la méthode "WithDetails" pour avoir les Inscriptions et les Categories
+        var e = await _eventRepository.GetByIdWithDetailsAsync(id);
+
+        if (e == null) return null;
+
+        var dto = new GetEventDetailResponseDTO
+        {
+            Id = e.Id,
+            Name = e.Name,
+            Description = e.Description, 
+            Lieu = e.Lieu,
+            Start = e.Start,
+            End = e.End,
+            NbMin = e.NbMin,
+            NbMax = e.NbMax,
+            Statut = e.Statut.ToString(),
+            LimiteInscription = e.LimiteInscription,
+            ListeAttenteActive = e.ListeAttenteActive,
+            Categories = e.Categories?.Select(c => c.Name).ToList() ?? new List<string>()
+        };
+
+        // Pour séparer Inscrits et Liste d'attente on trie par date d'inscription (les premiers arrivés sont inscrits)
+       
+        var allInscriptions = e.Inscriptions.OrderBy(i => i.DateInscription).ToList();
+
+        // Les inscrits (dans la limite du NbMax)
+        dto.MembresInscrits = allInscriptions
+            .Take(e.NbMax)
+            .Select(i => i.User.Pseudo ?? "Anonyme") // que le pseudo !
+            .ToList();
+
+        // La liste d'attente (ceux qui dépassent le NbMax)
+        if (e.ListeAttenteActive)
+        {
+            dto.ListeAttente = allInscriptions
+                .Skip(e.NbMax)
+                .Select(i => i.User.Pseudo ?? "Anonyme") //On ajoute ?? "" pour garantir que ce n'est pas null
+                .ToList();
+        }
+
+        return dto;
+    }
 }

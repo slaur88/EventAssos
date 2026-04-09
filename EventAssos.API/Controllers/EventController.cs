@@ -25,14 +25,36 @@ namespace EventAssos.API.Controllers
 
         // GET: api/event/top10
         [HttpGet("top10")]
-        [AllowAnonymous] // La page d'accueil est publique
+        [AllowAnonymous] 
         [ProducesResponseType(typeof(List<GetEventResponseDTO>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetTop10Events()
         {
             var events = await _eventService.GetTop10EventsAsync();
             return Ok(events);
         }
-    
+
+
+
+        // GET: api/event/{id}
+        [HttpGet("{id}")]
+        [AllowAnonymous] 
+        [ProducesResponseType(typeof(GetEventDetailResponseDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetEventById([FromRoute] Guid id)
+        {
+            
+            var eventDetail = await _eventService.GetEventByIdAsync(id);
+
+            // Si le service renvoie null, c'est que l'ID n'existe pas
+            if (eventDetail == null)
+            {
+                return NotFound(new { message = $"L'événement avec l'ID {id} n'existe pas." });
+            }
+
+            // Sinon, on renvoie le DTO de détail
+            return Ok(eventDetail);
+        }
+
 
         //Post avec ResultPattern
         [HttpPost]

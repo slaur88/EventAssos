@@ -18,4 +18,6 @@ public interface IEventService: IBaseService<Event, Guid>
     Task<List<GetEventResponseDTO>> GetTop10EventsAsync();
 
     Task<List<GetEventResponseDTO>> GetAllEventsAsync();
+
+    Task<GetEventDetailResponseDTO?> GetEventByIdAsync(Guid id);
 }
