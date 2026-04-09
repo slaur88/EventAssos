@@ -105,6 +105,23 @@ namespace EventAssos.Secu.Services.Data;
             return ResultPattern<Event>.Failure("Seuls les événements 'en cours' peuvent être annulés.");
         eve.Statut = EventStatut.Annulé;
         await _eventRepository.UpdateAsync(eve);
+
+        var inscrit = eve.Inscriptions.Where(i => i.Statut == StatutInscription.Confirme).ToList();
+
+        foreach (var inscription in inscrit) 
+        {
+            string subject = $"Événement annulé : {eve.Name}";
+
+            string body = $@"
+                <html>
+                    <body>
+                        <h2> Événement annulé </h2>
+                        <p>L'événement <strong>{eve.Name}</strong> a été annulé.</p>
+                        <p>Nous sommes désolés pour ce désagrément. Restez à l'affût des prochains événements !</p>
+                    </body>
+                </html>";
+            await _emailService.SendEmailAsync(inscription.User.Email, subject, body);
+        }
         return ResultPattern<Event>.Success(eve);
     }
 
@@ -116,6 +133,23 @@ namespace EventAssos.Secu.Services.Data;
         if (eve.Statut != EventStatut.EnAttente)
             throw new InvalidOperationException("Seuls les événements 'en attente' peuvent être supprimés.");
 
+        var inscrit = eve.Inscriptions.Where(i => i.Statut == StatutInscription.Confirme).ToList();
+
+        foreach (var inscription in inscrit)
+        {
+            string subject = $"Événement supprimé : {eve.Name}";
+
+            string body = $@"
+                <html>
+                    <body>
+                        <h2> Événement supprimé </h2>
+                        <p>L'événement <strong>{eve.Name}</strong> a été supprimé.</p>
+                        <p>Nous sommes désolés pour ce désagrément. Restez à l'affût des prochains événements !</p>
+                    </body>
+                </html>";
+            await _emailService.SendEmailAsync(inscription.User.Email, subject, body);
+        }
+    
         await _eventRepository.DeleteAsync(eventId);
     }
 
@@ -179,6 +213,24 @@ namespace EventAssos.Secu.Services.Data;
         eve.MiseAJour = DateTime.UtcNow;
 
         await _eventRepository.UpdateAsync(eve);
+        var inscrits = eve.Inscriptions.Where(i => i.Statut == StatutInscription.Confirme);
+
+        foreach (var inscription in inscrits)
+        {
+            var user = inscription.User;
+
+            string subject = $"Événement modifié : {eve.Name}";
+
+            string body = $@"
+                <html>
+                    <body>
+                        <h2>Événement modifié</h2>
+                        <p>L'événement <strong>{eve.Name}</strong> a été mis à jour.</p>
+                    </body>
+                </html>";
+
+            await _emailService.SendEmailAsync(user.Email, subject, body);
+        }
         return eve;
     }
 }
