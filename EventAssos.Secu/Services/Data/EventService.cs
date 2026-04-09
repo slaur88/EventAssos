@@ -19,6 +19,8 @@ namespace EventAssos.Secu.Services.Data;
 {
     public async Task<ResultPattern<Event>> CreateEventAsync(AddEventRequestDto eventdto)
     {
+        var admin = await _userRepository.GetUserByEmailAsync("dupont@admin.com");//on reprend le mail de Madame 
+
         //le start doit être dans le futur
         if (eventdto.Start <= DateTime.UtcNow)
             return ResultPattern<Event>.Failure("La date de début doit être postérieure à aujourd'hui.");
@@ -50,6 +52,7 @@ namespace EventAssos.Secu.Services.Data;
             LimiteInscription = eventdto.LimiteInscription,
             MiseAJour = DateTime.UtcNow,
             ListeAttenteActive = eventdto.ListeAttenteActive,
+            CreatedByUserId = admin.Id
 
 
         };
@@ -69,28 +72,41 @@ namespace EventAssos.Secu.Services.Data;
         var result = await _eventRepository.AddAsync(newEvent);
 
 
+        
         var allUsers = await _userRepository.GetAllAsync();
 
-        foreach (var user in allUsers)
-
+       //on ne lance la boucle que s'il y a des gens
+        if (allUsers != null && allUsers.Any())
         {
-            string subject = $"Nouvel événement : {newEvent.Name}";
+            foreach (var user in allUsers)
+            {
+                // on n'envoie pas de mail si l'utilisateur n'a pas d'adresse
+                if (string.IsNullOrEmpty(user.Email)) continue;
 
+                try
+                {
+                    string subject = $"Nouvel événement : {newEvent.Name}";
+                    string body = $@"
+                    <html>
+                        <body>
+                            <h2>Nouvel événement disponible !</h2>
+                            <p>Un nouvel événement vient d'être ajouté sur EventAssos !</p>
+                            <p><strong>{newEvent.Name}</strong></p>
+                            <p>{newEvent.Description}</p>
+                            <p>Date : {newEvent.Start}</p>
+                            <p>Lieu : {newEvent.Lieu ?? "À définir"}</p>
+                        </body>
+                    </html>";
 
-            string body = $@"
-                <html>
-                    <body>
-                        <h2> Nouvel événement disponible !</h2>
-                        <p>Un nouvel événement vient d'être ajouté sur EventAssos !</p>
-                        <p><strong>{newEvent.Name}</strong></p>
-                        <p>{newEvent.Description}</p>
-                        <p>Date : {newEvent.Start}</p>
-                        <p>Lieu : {newEvent.Lieu ?? "À définir"}</p>
-                        <p>Connectez-vous pour vous inscrire !</p>
-                    </body>
-                </html>";
-
-            await _emailService.SendEmailAsync(user.Email, subject, body);
+                    await _emailService.SendEmailAsync(user.Email, subject, body);
+                }
+                catch (Exception ex)
+                {
+                    // Si l'envoi échoue (pas d'internet, service mail en panne),
+                    // on écrit l'erreur dans la console mais on ne fait pas planter l'API.
+                    Console.WriteLine($"Échec envoi mail à {user.Email} : {ex.Message}");
+                }
+            }
         }
 
 
@@ -196,7 +212,7 @@ namespace EventAssos.Secu.Services.Data;
         //le end doit être après le start
         if (eventdto.End.HasValue)
         {
-            if (eventdto.End.Value <= eventdto.Start)
+            if (eventdto.End.Value <= eve.Start)
                 throw new InvalidOperationException("La date de fin doit être postérieure à la date de début.");
             eve.End = eventdto.End.Value;
         }

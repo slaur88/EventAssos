@@ -12,6 +12,9 @@ namespace EventAssos.Secu.Interfaces.Services.Data
         Task UpdatePseudo(Guid userId, string newPseudo);
         Task<User?> GetByIdAsync(Guid id);
 
-        
+        Task AddAsync(User user);
+        Task<User?> GetUserByEmailAsync(string email);
+
+
     }
 }
