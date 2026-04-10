@@ -1,4 +1,5 @@
-﻿using EventAssos.Domain.Entities;
+﻿using EventAssos.Core.DTOs.Responses;
+using EventAssos.Domain.Entities;
 using EventAssos.Secu.DTOs.Requests;
 using EventAssos.Secu.Interfaces.Services.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -109,6 +110,20 @@ namespace EventAssos.API.Controllers
                 return StatusCode(500, new { error = "Une erreur interne est survenue." });
             }
 
+        }
+        // Stats
+        [HttpGet("{id}/stats")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(EventStatsResponseDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetStatsAsync([FromRoute] Guid id)
+        {
+            var result = await _eventService.GetStatsAsync(id);
+
+            if (result.IsFailure)
+                return NotFound(new { message = result.ErrorMessage });
+
+            return Ok(result.Data);
         }
     }
 }

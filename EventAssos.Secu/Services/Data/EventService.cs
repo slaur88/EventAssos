@@ -1,4 +1,5 @@
-﻿using EventAssos.Core.Interfaces.Repositories;
+﻿using EventAssos.Core.DTOs.Responses;
+using EventAssos.Core.Interfaces.Repositories;
 using EventAssos.Core.Objects;
 using EventAssos.Domain.Entities;
 using EventAssos.Domain.Enums;
@@ -248,5 +249,15 @@ namespace EventAssos.Secu.Services.Data;
             await _emailService.SendEmailAsync(user.Email, subject, body);
         }
         return eve;
+    }
+
+    public async Task<ResultPattern<EventStatsResponseDTO>> GetStatsAsync(Guid eventId)
+    {
+        var stats = await _eventRepository.GetEventStatsAsync(eventId);
+
+        if (stats == null)
+            return ResultPattern<EventStatsResponseDTO>.Failure("Événement introuvable.");
+
+        return ResultPattern<EventStatsResponseDTO>.Success(stats);
     }
 }
