@@ -7,7 +7,8 @@ namespace EventAssos.Domain.Entities
 {
     public class Inscription
     {
-        
+        public Guid InscriptionId { get; set; }
+        public bool listeAttenteActive { get; set; }
         //Navigation
         public Guid UserId { get; set; }
         public User User { get; set; }
