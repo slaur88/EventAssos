@@ -18,7 +18,7 @@ namespace EventAssos.Infra.Database.Configuration
             builder.Property(i => i.Statut)
                 .IsRequired();
 
-            builder.Property(i => i.Date)
+            builder.Property(i => i.DateInscription)
                 .IsRequired();
 
             

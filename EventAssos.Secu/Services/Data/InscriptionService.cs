@@ -61,7 +61,7 @@ namespace EventAssos.Secu.Services.Data
                 InscriptionId = Guid.NewGuid(),
                 UserId = userId,
                 EventId = eventId,
-                Date = DateTime.Now,
+                DateInscription = DateTime.Now,
                 listeAttenteActive = dansListeAttente
             };
 

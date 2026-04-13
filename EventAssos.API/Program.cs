@@ -32,6 +32,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
  {
      // Cette ligne ignore les cycles infinis
      options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+     options.JsonSerializerOptions.PropertyNamingPolicy = null;
  });
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi(options => options.AddDocumentTransformer<BearerSecuritySchemeTransformer>());
