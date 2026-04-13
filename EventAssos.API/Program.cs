@@ -15,6 +15,18 @@ builder.Services.ConfigureJwTAuthentication(builder.Configuration);
 builder.Services.AddSecuServices(builder.Configuration);
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
+//Pour lier API et Angular
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200") // L'URL d'Angular
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials(); // Important pour les tokens 
+    });
+});
+
 
 builder.Services.AddControllers().AddJsonOptions(options =>
  {
@@ -27,6 +39,14 @@ builder.Services.AddOpenApi(options => options.AddDocumentTransformer<BearerSecu
 
 var app = builder.Build();
 
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    // On utilise "await" ici. 
+    // Si ça souligne 'app', vérifie que tu n'as pas oublié de fermer une parenthèse au-dessus.
+    await EventAssos.Secu.Data.Seed.AdminSeed.SeedMadameDupontAsync(services);
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -35,6 +55,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 
 app.UseCors("CorsPolicy");
 

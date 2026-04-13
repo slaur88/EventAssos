@@ -21,12 +21,19 @@ IEmailService _emailService
 {
     public async Task<LoginResponseDto> Login(LoginRequestDTO credentials)
     {
-        // On cherche l'utilisateur par l'identifiant fourni (mail ou pseudo)
         var user = await _userRepository.GetByEmailOrPseudoAsync(credentials.Identifier);
-
-        // Si l'utilisateur n'existe pas ou que le mot de passe est faux
-        if (user == null || !_passwordHasherService.VerifyPassword(credentials.Password, user.Password))
+        if (user == null)
         {
+            Console.WriteLine($"---> LOGIN FAIL: L'utilisateur '{credentials.Identifier}' n'existe pas en base.");
+            throw new UnauthorizedAccessException("Identifiant ou mot de passe incorrect");
+        }
+
+        
+        bool isPasswordOk = _passwordHasherService.VerifyPassword(credentials.Password, user.Password);
+        if (!isPasswordOk)
+        {
+            Console.WriteLine($"---> LOGIN FAIL: Mot de passe incorrect pour {user.Email}.");
+            Console.WriteLine($"Saisi: {credentials.Password} | En base: {user.Password}");
             throw new UnauthorizedAccessException("Identifiant ou mot de passe incorrect");
         }
 
