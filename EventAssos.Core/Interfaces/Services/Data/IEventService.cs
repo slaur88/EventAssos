@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using EventAssos.Core.Objects;
+using EventAssos.Core.DTOs.Responses;
 
 namespace EventAssos.Secu.Interfaces.Services.Data;
 
@@ -13,4 +14,10 @@ public interface IEventService: IBaseService<Event, Guid>
     Task<ResultPattern<Event>> CancelAsync(Guid eventId);
 
     Task<ResultPattern<Event>> CreateEventAsync(AddEventRequestDto eventdto);
+
+    Task<List<GetEventResponseDTO>> GetTop10EventsAsync();
+
+    Task<List<GetEventResponseDTO>> GetAllEventsAsync();
+
+    Task<GetEventDetailResponseDTO?> GetEventByIdAsync(Guid id);
 }

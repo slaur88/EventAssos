@@ -1,4 +1,5 @@
-﻿using EventAssos.Core.Interfaces.Repositories;
+﻿using EventAssos.Core.DTOs.Responses;
+using EventAssos.Core.Interfaces.Repositories;
 using EventAssos.Core.Objects;
 using EventAssos.Domain.Entities;
 using EventAssos.Domain.Enums;
@@ -15,8 +16,9 @@ namespace EventAssos.Secu.Services.Data;
 
 
     public class EventService(IEventRepository _eventRepository,
+
         ICategorieRepository _categorieRepository, IUserRepository _userRepository, IEmailService _emailService) : IEventService
-{
+    {
     public async Task<ResultPattern<Event>> CreateEventAsync(AddEventRequestDto eventdto)
     {
         var admin = await _userRepository.GetUserByEmailAsync("dupont@admin.com");//on reprend le mail de Madame 
@@ -119,7 +121,7 @@ namespace EventAssos.Secu.Services.Data;
         if (eve == null) return ResultPattern<Event>.Failure("Événement introuvable.");
         if (eve.Statut != EventStatut.EnCours)
             return ResultPattern<Event>.Failure("Seuls les événements 'en cours' peuvent être annulés.");
-        eve.Statut = EventStatut.Annulé;
+        eve.Statut = EventStatut.Annule;
         await _eventRepository.UpdateAsync(eve);
 
         var inscrit = eve.Inscriptions.Where(i => i.Statut == StatutInscription.Confirme).ToList();
@@ -248,5 +250,108 @@ namespace EventAssos.Secu.Services.Data;
             await _emailService.SendEmailAsync(user.Email, subject, body);
         }
         return eve;
+    }
+
+    public async Task<List<GetEventResponseDTO>> GetTop10EventsAsync()
+    {
+        var events = await _eventRepository.GetAllAsync();
+
+        return events
+            .Where(e => e.Statut != EventStatut.Termine && e.Statut != EventStatut.Annule)
+            .OrderByDescending(e => e.MiseAJour)  // On trie par mise à jour décroissante                       
+            .Take(10) //On prend les 10 premiers  
+            .Select(e => new GetEventResponseDTO  // On transforme chaque entité Event en EventResponseDto
+            {
+                Id = e.Id,
+                Name = e.Name,
+                Description = e.Description.Length > 150 ? e.Description.Substring(0, 147) + "..." : e.Description,// Tronquage à 150 caractères
+                Lieu = e.Lieu,
+                Start = e.Start,
+                End = e.End,
+                NbMin = e.NbMin,
+                NbMax = e.NbMax,
+                Statut = e.Statut.ToString(),
+                LimiteInscription = e.LimiteInscription,
+                ListeAttenteActive = e.ListeAttenteActive,
+                Categories = e.Categories.Select(c => c.Name).ToList(),
+                NbInscrits = 0 
+            })
+            .ToList();
+    }
+
+    public async Task<List<GetEventResponseDTO>> GetAllEventsAsync()
+    {
+        var events = await _eventRepository.GetAllAsync();
+
+        // On utilise MapToResponseDto pour transformer la liste
+        return events.Select(e => MapToResponseDto(e)).ToList();
+    }
+
+    private GetEventResponseDTO MapToResponseDto(Event e)
+    {
+        return new GetEventResponseDTO
+        {
+            Id = e.Id,
+            Name = e.Name,
+            Description = e.Description?.Length > 150
+                          ? e.Description.Substring(0, 147) + "..."
+                          : e.Description ?? "", // Règle des 150 caractères avec une Ternaire
+            Lieu = e.Lieu,
+            Start = e.Start,
+            End = e.End,
+            NbMin = e.NbMin,
+            NbMax = e.NbMax,
+            NbInscrits = e.Inscriptions?.Count ?? 0,
+            Statut = e.Statut.ToString(),
+            LimiteInscription = e.LimiteInscription,
+            ListeAttenteActive = e.ListeAttenteActive,
+            Categories = e.Categories?.Select(c => c.Name).ToList() ?? new List<string>()
+        };
+    }
+
+
+    public async Task<GetEventDetailResponseDTO?> GetEventByIdAsync(Guid id)
+    {
+        // On utilise la méthode "WithDetails" pour avoir les Inscriptions et les Categories
+        var e = await _eventRepository.GetByIdWithDetailsAsync(id);
+
+        if (e == null) return null;
+
+        var dto = new GetEventDetailResponseDTO
+        {
+            Id = e.Id,
+            Name = e.Name,
+            Description = e.Description, 
+            Lieu = e.Lieu,
+            Start = e.Start,
+            End = e.End,
+            NbMin = e.NbMin,
+            NbMax = e.NbMax,
+            Statut = e.Statut.ToString(),
+            LimiteInscription = e.LimiteInscription,
+            ListeAttenteActive = e.ListeAttenteActive,
+            Categories = e.Categories?.Select(c => c.Name).ToList() ?? new List<string>()
+        };
+
+        // Pour séparer Inscrits et Liste d'attente on trie par date d'inscription (les premiers arrivés sont inscrits)
+       
+        var allInscriptions = e.Inscriptions.OrderBy(i => i.DateInscription).ToList();
+
+        // Les inscrits (dans la limite du NbMax)
+        dto.MembresInscrits = allInscriptions
+            .Take(e.NbMax)
+            .Select(i => i.User.Pseudo ?? "Anonyme") // que le pseudo !
+            .ToList();
+
+        // La liste d'attente (ceux qui dépassent le NbMax)
+        if (e.ListeAttenteActive)
+        {
+            dto.ListeAttente = allInscriptions
+                .Skip(e.NbMax)
+                .Select(i => i.User.Pseudo ?? "Anonyme") //On ajoute ?? "" pour garantir que ce n'est pas null
+                .ToList();
+        }
+
+        return dto;
     }
 }

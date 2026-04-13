@@ -14,7 +14,7 @@ namespace EventAssos.Domain.Entities
         public Guid EventId { get; set; }
         public Event Event { get; set; }
         public StatutInscription Statut { get; set; }
-        public DateTime Date
+        public DateTime DateInscription
         {
             get; set;
         }

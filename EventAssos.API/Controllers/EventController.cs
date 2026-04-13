@@ -1,4 +1,5 @@
-﻿using EventAssos.Domain.Entities;
+﻿using EventAssos.Core.DTOs.Responses;
+using EventAssos.Domain.Entities;
 using EventAssos.Secu.DTOs.Requests;
 using EventAssos.Secu.Interfaces.Services.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +13,49 @@ namespace EventAssos.API.Controllers
     [Authorize]
     public class EventController(IEventService _eventService) : ControllerBase
     {
+        // GET: api/event
+        [HttpGet]
+        [AllowAnonymous] // Tout le monde peut voir la liste, même non connecté
+        [ProducesResponseType(typeof(List<GetEventResponseDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllEvents()
+        {
+            var events = await _eventService.GetAllEventsAsync();
+            return Ok(events);
+        }
+
+        // GET: api/event/top10
+        [HttpGet("top10")]
+        [AllowAnonymous] 
+        [ProducesResponseType(typeof(List<GetEventResponseDTO>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetTop10Events()
+        {
+            var events = await _eventService.GetTop10EventsAsync();
+            return Ok(events);
+        }
+
+
+
+        // GET: api/event/{id}
+        [HttpGet("{id}")]
+        [AllowAnonymous] 
+        [ProducesResponseType(typeof(GetEventDetailResponseDTO), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetEventById([FromRoute] Guid id)
+        {
+            
+            var eventDetail = await _eventService.GetEventByIdAsync(id);
+
+            // Si le service renvoie null, c'est que l'ID n'existe pas
+            if (eventDetail == null)
+            {
+                return NotFound(new { message = $"L'événement avec l'ID {id} n'existe pas." });
+            }
+
+            // Sinon, on renvoie le DTO de détail
+            return Ok(eventDetail);
+        }
+
+
         //Post avec ResultPattern
         [HttpPost]
         [Authorize(Roles = "Admin")]

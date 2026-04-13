@@ -8,7 +8,7 @@ namespace EventAssos.Domain.Enums
     {
         EnAttente,
         EnCours,
-        Annulé,
-        Terminé
+        Annule,
+        Termine
     }
 }
